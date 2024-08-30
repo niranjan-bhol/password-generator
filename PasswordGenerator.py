@@ -1,49 +1,48 @@
-import string
 import random
+import string
 
-# Getting password length
-length = int(input("Enter password length: "))
+def generate_password(length, use_uppercase, use_lowercase, use_numbers, use_symbols):
+    # Define character pools based on user preferences
+    char_pool = ''
+    if use_uppercase:
+        char_pool += string.ascii_uppercase
+    if use_lowercase:
+        char_pool += string.ascii_lowercase
+    if use_numbers:
+        char_pool += string.digits
+    if use_symbols:
+        char_pool += string.punctuation
 
-print('''Choose character set for password from below : 
-      1. Letters
-      2. Digits
-      3. Special Characters
-      4. Exit''')
+    # Ensure at least one character pool is selected
+    if not char_pool:
+        return "Error: No character types selected!"
 
-characterList = ""
+    # Generate the password by randomly choosing characters from the pool
+    password = ''.join(random.choice(char_pool) for _ in range(length))
 
-# Getiing character set for password
-while(True):
-    
-    choice = int(input("Enter your choice: "))
-    
-    if(choice == 1):
-        # Adding letters to possible characters
-        characterList += string.ascii_letters
-        
-    elif(choice == 2):
-        # Adding digits to possible characters
-        characterList += string.digits
-        
-    elif(choice == 3):
-        # Adding special characters to possible characters
-        characterList += string.punctuation
-        
-    elif(choice == 4):
-        break
-    
+    return password
+
+def get_user_preferences():
+    try:
+        length = int(input("Enter the length of the password: "))
+    except ValueError:
+        return "Error: Length must be an integer!"
+
+    use_uppercase = input("Include uppercase letters? (yes/no): ").strip().lower() == 'yes'
+    use_lowercase = input("Include lowercase letters? (yes/no): ").strip().lower() == 'yes'
+    use_numbers = input("Include numbers? (yes/no): ").strip().lower() == 'yes'
+    use_symbols = input("Include symbols? (yes/no): ").strip().lower() == 'yes'
+
+    return length, use_uppercase, use_lowercase, use_numbers, use_symbols
+
+# Main program
+if __name__ == "__main__":
+    length, use_uppercase, use_lowercase, use_numbers, use_symbols = get_user_preferences()
+
+    if isinstance(length, str):  # Checks if there was an error with the length input
+        print(length)
+    elif length <= 0 or not (use_uppercase or use_lowercase or use_numbers or use_symbols):
+        print("Invalid input: Please ensure that the length is greater than 0 and at least one character type is selected.")
     else:
-        print("Please enter a valid option")
-
-password = []
-
-for i in range(length):
-
-    # Picking a random character from characterList
-    random_char = random.choice(characterList)
-
-    # Appending a random character to password
-    password.append(random_char)
-
-# printing password as a string
-print("The generated random password is " + ''.join(password))
+        password = generate_password(length, use_uppercase, use_lowercase, use_numbers, use_symbols)
+        print(f"Generated Password: {password}")
