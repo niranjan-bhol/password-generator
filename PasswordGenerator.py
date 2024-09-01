@@ -1,3 +1,5 @@
+"""
+
 import random
 import string
 
@@ -46,3 +48,50 @@ if __name__ == "__main__":
     else:
         password = generate_password(length, use_uppercase, use_lowercase, use_numbers, use_symbols)
         print(f"Generated Password: {password}")
+
+"""
+
+import re
+from random import choice
+
+print("\n             --- Password Generator --- \n\n")
+
+string = input("Enter your password for enhancing security : ")
+
+print("\n")
+
+a = r'string'
+
+def search_string_with_regex(file_path, search_string):
+    with open(file_path, 'r') as file:
+        file_contents = file.read()
+        match = re.search(search_string, file_contents)
+        return match is not None
+
+file_path = 'password_list.txt'
+
+search_string = a
+
+if search_string_with_regex(file_path, search_string):
+    print("Password found in the compromised passwords list, don't worry we will make it strong.")
+else:
+    print("Well done!! You have a quite strong password, still we will make it unbreakable.")
+
+print("\n")
+
+res = ''.join(choice((str.upper, str.lower))(char) for char in string)
+
+if "a" or "A" in res :
+    p1 = res.replace('a','@')
+    p1 = p1.replace('A','@')
+
+if "s" or "S" in p1 :
+    p1 = p1.replace('s','$')
+    p1 = p1.replace('S','$')
+
+if "o" or "O" in p1 :
+    p1 = p1.replace('o','0')
+    p1 = p1.replace('O','0')
+
+print("Your Entered Password : "+string+"\n")
+print("We generated Strong Password : "+p1)
